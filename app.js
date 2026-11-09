@@ -14,8 +14,9 @@ function home(){const p=Math.round(dn()/tot*100);return`<section class="hero"><d
 function cat(c){const i=C.indexOf(c),pv=C[i-1],nx=C[i+1];
 const st=c.s.map((s,k)=>({s,k})).filter(o=>F==0||g(c.id,o.k)==F-1);
 return`<div class="chead"><div class="ic">${c.ic}</div><div><h1>${c.t}</h1><div class="bar" style="margin-top:8px"><i style="width:${pc(c)}%"></i></div><small>${done(c)} จาก ${c.s.length} ขั้นตอน (${pc(c)}%)</small></div><button class="back" data-h="home">← กลับหน้าหมวดหมู่</button></div>
+<div class="sp"><div class="bar"><i style="width:${pc(c)}%"></i></div><b>${done(c)} จาก ${c.s.length} ขั้นตอน (${pc(c)}%)</b></div>
 <div class="chips">${['ทั้งหมด',...L].map((l,x)=>`<button class="chip ${F==x?'on':''}" data-f="${x}">${l}</button>`).join('')}</div>
-${st.map(({s,k})=>{const v=g(c.id,k);return`<article class="step s${v}" id="s-${c.id}-${k}"><div class="sh"><div class="num">${k+1}</div><h3>${s.t}</h3><button class="st s${v}" data-c="${c.id}" data-k="${k}" title="กดเพื่อเปลี่ยนสถานะ">${['○','◐','✔'][v]} ${L[v]}</button></div>
+${st.map(({s,k})=>{const v=g(c.id,k);return`<article class="step s${v}" id="s-${c.id}-${k}"><div class="sh"><div class="num">${k+1}</div><h3>${s.t}</h3></div><div class="sg">${L.map((l,x)=>`<button class="st s${x}${v==x?' on':''}" data-c="${c.id}" data-k="${k}" data-v="${x}">${['○','◐','✔'][x]} ${l}</button>`).join('')}</div>
 <ol>${s.d.map(x=>`<li>${x}</li>`).join('')}</ol>${s.c?`<pre>${s.c}</pre>`:''}${s.n?`<div class="note">💡 คำแนะนำ: ${s.n}</div>`:''}${s.w?`<div class="warn">⚠️ ข้อควรระวัง: ${s.w}</div>`:''}
 <div class="shots" data-p="${c.id}-${k+1}" data-l="${(s.imgs||(s.img?[s.img]:[])).join('|')}"><figure class="shot">ภาพหน้าจอตัวอย่าง ขั้นตอนที่ ${k+1}</figure></div></article>`}).join('')||'<p>ไม่มีขั้นตอนในสถานะนี้</p>'}
 <div class="pn">${pv?`<button data-h="${pv.id}">← ${pv.t}</button>`:'<span></span>'}${nx?`<button data-h="${nx.id}">${nx.t} →</button>`:`<button data-h="home">เสร็จสิ้นทุกหมวด กลับหน้าแรก</button>`}</div>`}
@@ -28,7 +29,7 @@ addEventListener('hashchange',()=>{F=0;render();if(!hl)window.scrollTo(0,0)});
 document.addEventListener('click',e=>{
 const b=e.target.closest('[data-h]');if(b){go(b.dataset.h);return}
 const f=e.target.closest('[data-f]');if(f){F=+f.dataset.f;render();return}
-const s=e.target.closest('[data-c]');if(s){const k=s.dataset.c+'_'+s.dataset.k;S[k]=((S[k]||0)+1)%3;sv();render();return}
+const s=e.target.closest('[data-c]');if(s){const k=s.dataset.c+'_'+s.dataset.k;S[k]=+s.dataset.v;sv();render();return}
 if(!e.target.closest('.sw'))$('#res').classList.remove('on')});
 $('#mb').onclick=()=>{$('#sd').classList.toggle('on');$('#ov').classList.toggle('on')};
 $('#ov').onclick=closeM;
@@ -43,7 +44,7 @@ render();
 
 /* โหลดรูปประกอบ: ถ้าระบุ imgs/img ใน data.js จะใช้ตามนั้น ไม่เช่นนั้นค้นหาอัตโนมัติ
    cat1-1.png, cat1-1-2.png, cat1-1-3.png ... (นามสกุล png/jpg/jpeg/webp, สูงสุด 12 รูป) */
-function probe(base){return new Promise(r=>{const x=['png','jpg','jpeg','webp'];let i=0;(function t(){if(i>=x.length)return r(null);const im=new Image(),u=base+'.'+x[i++];im.onload=()=>r(u);im.onerror=t;im.src=u})()})}
+function probe(base){return new Promise(r=>{const x=['png'];let i=0;(function t(){if(i>=x.length)return r(null);const im=new Image(),u=base+'.'+x[i++];im.onload=()=>r(u);im.onerror=t;im.src=u})()})}
 function shots(){document.querySelectorAll('.shots').forEach(async b=>{
 const fig=u=>{const f=document.createElement('figure');f.className='shot';f.innerHTML='<img alt="ภาพหน้าจอ">';f.firstChild.src=u;return f};
 const put=l=>{if(l.length)b.replaceChildren(...l.map(fig))};
