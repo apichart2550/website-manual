@@ -58,7 +58,7 @@ aside h3{font-size:13px;color:var(--mu);font-weight:500;margin:0 8px 8px}
 
 .reset{margin-top:14px;width:100%;border:1px dashed var(--bd);background:none;border-radius:10px;padding:8px;color:var(--mu);font-size:13px}
 
-main{padding:26px clamp(14px,3vw,40px) 60px;max-width:1600px;width:100%}
+main{padding:26px clamp(14px,3vw,40px) 60px;max-width:1040px;width:100%}
 
 .hero{background:linear-gradient(135deg,var(--navy),#14438f 70%,#2a7fd6);color:#fff;border-radius:22px;padding:clamp(22px,4vw,44px);display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:center;animation:up .6s ease both}
 
